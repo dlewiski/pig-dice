@@ -1,10 +1,12 @@
 // Business
+
+// Player Constructor
 function Player(name, roll, total) {
   this.name = name
   this.diceRolls = roll
   this.total = total
 }
-
+// Random dice engine
 function diceRoll(Player) {
   var dice = Math.floor(Math.random() * (6)+1);
   if (dice === 1) {
@@ -14,7 +16,7 @@ function diceRoll(Player) {
     return Player;
   }
 }
-
+// Add total for dice
 function hold (Player){
   Player.total += Player.diceRolls.reduce(function(a,b){
     return a + b;
@@ -35,8 +37,6 @@ $("#newPlayer").submit(function (event) {
   console.log(players);
 
 });
-
-
 
 $("#roll").click(function() {
   diceRoll(players[0]);
