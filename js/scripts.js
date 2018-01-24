@@ -7,26 +7,50 @@ function Player(name, roll, total) {
   this.total = total
 }
 // Random dice engine
-function diceRoll(Player) {
-  var dice = Math.floor(Math.random() * (6)+1);
-  if (dice === 1) {
-    Player.diceRolls = [];
+function diceRoll(Player, active) {
+  if (active) {
+    var dice = Math.floor(Math.random() * (6)+1);
+    if (dice === 1) {
+      Player.diceRolls = [];
+    } else {
+      Player.diceRolls.push(dice);
+      return Player;
+    }
   } else {
-    Player.diceRolls.push(dice);
-    return Player;
+    return;
   }
 }
 // Add total for dice
-function hold (Player){
+function hold (Player, active){
   Player.total += Player.diceRolls.reduce(function(a,b){
     return a + b;
   });
+  Player.diceRolls = [];
+  active = false;
 }
+
+// function cyclePlayer(players) {
+//   for (i=0; i = false; i++) {
+//
+//       $("#roll").click(function() {
+//         diceRoll(players[i]);
+//       });
+//       $("#hold").click(function() {
+//           hold(players[i]);
+//           console.log(players[i]);
+//           break;
+//       });
+//   }
+// }
+// function playerChange(activePlayer) {
+//   activePlayer =
+// }
 
 // User
 $(document).ready(function() {
 var players = [];
-
+var active = true;
+var turnNum = 0;
 
 
 $("#newPlayer").submit(function (event) {
@@ -39,13 +63,18 @@ $("#newPlayer").submit(function (event) {
 });
 
 $("#roll").click(function() {
-  diceRoll(players[0]);
-  console.log(players[0]);
+  diceRoll(players[turnNum], active);
+  // playerChange(activePlayer);
+  console.log(players[turnNum]);
 });
 
 $("#hold").click(function() {
-  hold(players[0]);
-  console.log(players[0]);
+  hold(players[turnNum], active, turnNum);
+  console.log(players[turnNum]);
+  turnNum++;
+  // playerChange(activePlayer);
+
+  console.log(turnNum);
 });
 
 
