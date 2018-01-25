@@ -6,21 +6,22 @@ function Player(name, roll, total) {
   this.diceRolls = []
   this.total = 0
 }
-// Random dice engine
-function diceRoll(Player, active) {
-  if (active) {
+// Dice generator, add to turn, check for a "1" roll
+function diceRoll(Player, playerArr, turnNum) {
     var dice = Math.floor(Math.random() * (6)+1);
     if (dice === 1) {
       Player.diceRolls = [];
-      return;
-
+      if (turnNum < (playerArr.length - 1)){
+        turnNum++
+        return turnNum;
+      } else {
+        turnNum = 0;
+        return turnNum;
+      }
     } else {
       Player.diceRolls.push(dice);
-      return Player;
+      return turnNum;
     }
-  } else {
-    return;
-  }
 }
 // Add total for dice
 function hold (Player, active){
@@ -29,6 +30,12 @@ function hold (Player, active){
   });
   Player.diceRolls = [];
   active = false;
+}
+
+function totalCheck() {
+  if (player.total >= 100) {
+    
+  }
 }
 
 function turnCheck(playerArr, turnNum) {
@@ -44,7 +51,6 @@ function turnCheck(playerArr, turnNum) {
 // User
 $(document).ready(function() {
 var players = [];
-var active = true;
 var turnNum = 0;
 
 
@@ -60,8 +66,7 @@ $("#newPlayer").submit(function (event) {
 });
 
 $("#roll").click(function() {
-  diceRoll(players[turnNum], active);
-  // playerChange(activePlayer);
+  turnNum = diceRoll(players[turnNum], players, turnNum);
   console.log(players[turnNum]);
 });
 
