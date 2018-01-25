@@ -1,9 +1,14 @@
 #pigRain {
   display: none;
+  font-size: 200px;
 }
 
 .well {
   margin-top: 10px;
+}
+
+.currentPlayer {
+  background-color: #F3B8DE;
 }
 
 h3 {
@@ -13,4 +18,15 @@ h3 {
 body {
   background-color: pink;
   background-image: url(../img/pig.png);
+}
+
+.die {
+  height: 70px;
+  width: 70px;
+  margin-left: 5px;
+}
+
+img{
+  height: 100px;
+  width: 100px;
 }
