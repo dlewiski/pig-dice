@@ -3,8 +3,8 @@
 // Player Constructor
 function Player(name, roll, total) {
   this.name = name
-  this.diceRolls = roll
-  this.total = total
+  this.diceRolls = []
+  this.total = 0
 }
 // Random dice engine
 function diceRoll(Player, active) {
@@ -12,6 +12,8 @@ function diceRoll(Player, active) {
     var dice = Math.floor(Math.random() * (6)+1);
     if (dice === 1) {
       Player.diceRolls = [];
+      return;
+
     } else {
       Player.diceRolls.push(dice);
       return Player;
@@ -22,29 +24,22 @@ function diceRoll(Player, active) {
 }
 // Add total for dice
 function hold (Player, active){
-  Player.total += Player.diceRolls.reduce(function(a,b){
+  Player.total = Player.total + Player.diceRolls.reduce(function(a,b){
     return a + b;
   });
   Player.diceRolls = [];
   active = false;
 }
 
-// function cyclePlayer(players) {
-//   for (i=0; i = false; i++) {
-//
-//       $("#roll").click(function() {
-//         diceRoll(players[i]);
-//       });
-//       $("#hold").click(function() {
-//           hold(players[i]);
-//           console.log(players[i]);
-//           break;
-//       });
-//   }
-// }
-// function playerChange(activePlayer) {
-//   activePlayer =
-// }
+function turnCheck(playerArr, turnNum) {
+  if (turnNum < (playerArr.length - 1)){
+    console.log(playerArr.length + "  " + turnNum)
+    turnNum++
+  } else {
+    turnNum = 0;
+  }
+  return turnNum;
+}
 
 // User
 $(document).ready(function() {
@@ -55,8 +50,9 @@ var turnNum = 0;
 
 $("#newPlayer").submit(function (event) {
   event.preventDefault();
-  var newPlayer = new Player("", [], 0);
-  newPlayer.name = $("#playerName").val();
+
+  var newPlayer = new Player($("#playerName").val());
+
   players.push(newPlayer)
   console.log(players);
 
@@ -69,9 +65,17 @@ $("#roll").click(function() {
 });
 
 $("#hold").click(function() {
-  hold(players[turnNum], active, turnNum);
+  hold(players[turnNum], active);
+  turnNum = turnCheck(players, turnNum);
+  // if (turnNum < (players.length - 1)){
+  //   console.log(players.length + "  " + turnNum)
+  //   turnNum++
+  // } else {
+  //   turnNum = 0;
+  // }
   console.log(players[turnNum]);
-  turnNum++;
+
+
   // playerChange(activePlayer);
 
   console.log(turnNum);
