@@ -56,6 +56,7 @@ $("#newPlayer").submit(function (event) {
   players.push(newPlayer)
   console.log(players);
 
+  $("#playerList").append(newPlayer.name);
 });
 
 $("#roll").click(function() {
@@ -67,16 +68,9 @@ $("#roll").click(function() {
 $("#hold").click(function() {
   hold(players[turnNum], active);
   turnNum = turnCheck(players, turnNum);
-  // if (turnNum < (players.length - 1)){
-  //   console.log(players.length + "  " + turnNum)
-  //   turnNum++
-  // } else {
-  //   turnNum = 0;
-  // }
+
   console.log(players[turnNum]);
 
-
-  // playerChange(activePlayer);
 
   console.log(turnNum);
 });
