@@ -11,6 +11,7 @@ function diceRoll(Player, playerArr, turnNum) {
     var dice = Math.floor(Math.random() * (6)+1);
     if (dice === 1) {
       Player.diceRolls = [];
+      $("#" + Player.name + "Rolls").text("");
       if (turnNum < (playerArr.length - 1)){
         turnNum++
         return turnNum;
@@ -20,21 +21,25 @@ function diceRoll(Player, playerArr, turnNum) {
       }
     } else {
       Player.diceRolls.push(dice);
+      $("#" + Player.name + "Rolls").append(dice);
       return turnNum;
     }
 }
 // Add total for dice
-function hold (Player, active){
+function hold (Player){
   Player.total = Player.total + Player.diceRolls.reduce(function(a,b){
     return a + b;
   });
   Player.diceRolls = [];
-  active = false;
+  $("#" + Player.name + "Rolls").text("");
+  $("#" + Player.name).text(Player.total);
+  console.log(Player.total);
 }
 
-function totalCheck() {
-  if (player.total >= 100) {
-    
+function totalCheck(Player) {
+  if (Player.total >= 100) {
+    $(".gameBoard").hide();
+    $("#pigRain").show();
   }
 }
 
@@ -48,38 +53,42 @@ function turnCheck(playerArr, turnNum) {
   return turnNum;
 }
 
+function playerScoreCard(newPlayer) {
+  $(".scoreOutput").append(
+    "<div class='well'><h3>" + newPlayer.name + "</h3>" + "<p>Rolls: <span id='" + newPlayer.name + "Rolls'></p>" +
+    "<p>Your score is: <span id='" + newPlayer.name + "'>" + newPlayer.total + "</p></div>")
+}
+
 // User
 $(document).ready(function() {
-var players = [];
-var turnNum = 0;
+
+  $("#pigRain").makeItRain();
+
+  var players = [];
+  var turnNum = 0;
 
 
-$("#newPlayer").submit(function (event) {
-  event.preventDefault();
-
-  var newPlayer = new Player($("#playerName").val());
-
-  players.push(newPlayer)
-  console.log(players);
-
-  $("#playerList").append(newPlayer.name);
+  $("#newPlayer").submit(function (event) {
+    event.preventDefault();
+    var newPlayer = new Player($("#playerName").val());
+    playerScoreCard(newPlayer);
+    players.push(newPlayer)
+    console.log(players);
 });
 
-$("#roll").click(function() {
-  turnNum = diceRoll(players[turnNum], players, turnNum);
-  console.log(players[turnNum]);
-});
+  $("#roll").click(function() {
+    turnNum = diceRoll(players[turnNum], players, turnNum);
+    console.log(players[turnNum]);
+  });
 
-$("#hold").click(function() {
-  hold(players[turnNum], active);
-  turnNum = turnCheck(players, turnNum);
+  $("#hold").click(function() {
+    hold(players[turnNum]);
+    totalCheck(players[turnNum]);
+    turnNum = turnCheck(players, turnNum);
 
-  console.log(players[turnNum]);
-
-
-  console.log(turnNum);
-});
+    console.log(players[turnNum]);
 
 
-
+    console.log(turnNum);
+  });
 });

@@ -1,0 +1,16 @@
+#pigRain {
+  display: none;
+}
+
+.well {
+  margin-top: 10px;
+}
+
+h3 {
+  color: rgba(226, 79, 79, 0.9);
+}
+
+body {
+  background-color: pink;
+  background-image: url(../img/pig.png);
+}
