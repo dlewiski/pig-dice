@@ -2,42 +2,61 @@
 
 // Player Constructor
 function Player(name, roll, total) {
-  this.name = name
-  this.diceRolls = []
-  this.total = 0
-  this.id = "Current" + name
+  this.name = name;
+  this.diceRolls = [];
+  this.total = 0;
+  this.id = "Current" + name;
+  this.die = {
+    one:  '<img class="die" src="img/die1.png">',
+    two:  '<img class="die" src="img/die2.png">',
+    three:'<img class="die" src="img/die3.png">',
+    four: '<img class="die" src="img/die4.png">',
+    five: '<img class="die" src="img/die5.png">',
+    six:  '<img class="die" src="img/die6.png">'
+  }
 }
 // Dice generator, add to turn, check for a "1" roll
-function diceRoll(Player, playerArr, turnNum, die) {
+function diceGen(){
     var dice = Math.floor(Math.random() * (6)+1);
+    return dice;
+  }
+
+Player.prototype.hello = function () {
+  alert("hello world!");
+
+};
+
+
+Player.prototype.rollDice = function(playerArr, myTurnNum, dice) {
     if (dice === 1) {
-      $("#" + Player.name + "Rolls").append(die.one);
-      Player.diceRolls = [];
-      $("#" + Player.name + "Rolls").text("");
-      if (turnNum < (playerArr.length - 1)){
-        turnNum++
-        return turnNum;
+      $("#" + this.name + "Rolls").append(this.die.one);
+      this.diceRolls = [];
+      $("#" + this.name + "Rolls").text("");
+      if (myTurnNum < (playerArr.length - 1)){
+        myTurnNum++;
+        return myTurnNum;
       } else {
-        turnNum = 0;
-        return turnNum;
+        myTurnNum = 0;
+        return myTurnNum;
       }
     } else {
-      Player.diceRolls.push(dice);
+      this.diceRolls.push(dice);
       if (dice === 2) {
-        $("#" + Player.name + "Rolls").append(die.two);
+        $("#" + this.name + "Rolls").append(this.die.two);
       } else if (dice === 3) {
-        $("#" + Player.name + "Rolls").append(die.three);
+        $("#" + this.name + "Rolls").append(this.die.three);
       } else if (dice === 4) {
-        $("#" + Player.name + "Rolls").append(die.four);
+        $("#" + this.name + "Rolls").append(this.die.four);
       } else if (dice === 5) {
-        $("#" + Player.name + "Rolls").append(die.five);
+        $("#" + this.name + "Rolls").append(this.die.five);
       } else if (dice === 6) {
-        $("#" + Player.name + "Rolls").append(die.six);
+        $("#" + this.name + "Rolls").append(this.die.six);
       }
 
-      return turnNum;
+      return myTurnNum;
     }
 }
+
 // Add total for dice
 function hold (Player){
   Player.total = Player.total + Player.diceRolls.reduce(function(a,b){
@@ -98,20 +117,25 @@ $(document).ready(function() {
   $("#newPlayer").submit(function (event) {
     event.preventDefault();
     var newPlayer = new Player($("#playerName").val());
+
+    console.log(newPlayer);
     playerScoreCard(newPlayer);
     players.push(newPlayer);
     $("#playerName").val("");
     console.log(players);
-});
+
 
   $("#roll").click(function() {
-    turnNum = diceRoll(players[turnNum], players, turnNum, die);
+    diceGen();
+    //newPlayer.hello();
+
+    turnNum = newPlayer.rollDice(players, 0, diceGen());
+    // console.log(newPlayer.rollDice(players, 0));
     players.forEach(function(newPlayer) {
       currentPlayer(players, newPlayer, turnNum);
     });
     console.log(players[turnNum]);
   });
-
   $("#hold").click(function() {
     hold(players[turnNum]);
     totalCheck(players[turnNum]);
@@ -124,5 +148,6 @@ $(document).ready(function() {
 
 
     console.log(turnNum);
+  });
   });
 });
